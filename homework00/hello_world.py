@@ -1,2 +1,5 @@
+"""Модуль выводит фразу Hello, World!"""
 def text():
-    return message
+    """Возвращает строчку текста"""
+    return "Hello, World!"
+print(text())
