@@ -1,9 +1,6 @@
-"""Модуль выводит фразу Hello, World!"""
+"""Модуль выполняет лабораторную 0"""
 
 
 def text():
     """Возвращает строчку текста"""
-    return "Hello, World!"
-
-
-print(text())
+    return "message"
