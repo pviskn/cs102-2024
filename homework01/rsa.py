@@ -32,7 +32,8 @@ def gcd(a: int, b: int) -> int:
     >>> gcd(3, 7)
     1
     """
-    return math.gcd(a, b)
+    m = math.gcd(a, b)
+    return m
     pass
 
 
