@@ -1,5 +1,5 @@
 def encrypt_atbash(plaintext):
-    alphabet = '0абвгдежзийклмнопрстуфхцчшщъыьэюя'
+    alphabet = "0абвгдежзийклмнопрстуфхцчшщъыьэюя"
     ciphertext = ""
 
     for char in plaintext:
