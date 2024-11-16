@@ -1,4 +1,3 @@
-import math
 import random
 import typing as tp
 
@@ -19,7 +18,6 @@ def is_prime(n: int) -> bool:
         if n % i == 0:
             return False
     return True
-    pass
 
 
 def gcd(a: int, b: int) -> int:
@@ -30,9 +28,15 @@ def gcd(a: int, b: int) -> int:
     >>> gcd(3, 7)
     1
     """
-    m = math.gcd(a, b)
-    return m
-    pass
+    if a == 0 or b == 0:
+        return max(a, b)
+    else:
+        while a != b:
+            if a > b:
+                a -= b
+            else:
+                b -= a
+        return a
 
 
 def multiplicative_inverse(e: int, phi: int) -> int:
@@ -42,12 +46,17 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    d = 0
-    for i in range(phi + 1):
-        if i * e % phi == 1:
-            d = i
-    return d
-    pass
+    ophi = phi
+    x0, x1 = 0, 1
+    if phi == 1:
+        return 0
+    while e > 1:
+        f = e // phi
+        e, phi = phi, e % phi
+        x0, x1 = x1 - f * x0, x0
+    if x1 < 0:
+        x1 += ophi
+    return x1
 
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
