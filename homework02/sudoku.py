@@ -40,7 +40,7 @@ def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
     >>> group([1,2,3,4,5,6,7,8,9], 3)
     [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     """
-    return [values[i: i + n] for i in range(0, len(values), n)]
+    return [values[i : i + n] for i in range(0, len(values), n)]
 
 
 def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
@@ -96,7 +96,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
     """
     for r in range(len(grid)):
         for c in range(len(grid[r])):
-            if grid[r][c] == '.':
+            if grid[r][c] == ".":
                 return r, c
     return None
 
@@ -111,7 +111,7 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
-    values = set('123456789')
+    values = set("123456789")
     values -= set(get_row(grid, pos))
     values -= set(get_col(grid, pos))
     values -= set(get_block(grid, pos))
@@ -141,7 +141,7 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
             grid[row][col] = value
             if solve(grid):
                 return grid
-            grid[row][col] = '.'
+            grid[row][col] = "."
     return None
 
 
@@ -190,6 +190,7 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     >>> check_solution(solution)
     True
     """
+
     def fill_grid(grid: tp.List[tp.List[str]]) -> bool:
         """Заполняет сетку случайными числами от 1 до 9."""
         e = find_empty_positions(grid)
@@ -201,17 +202,17 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
             grid[row][col] = value
             if fill_grid(grid):
                 return True
-            grid[row][col] = '.'
+            grid[row][col] = "."
         return False
 
-    sudoku = [['.' for _ in range(9)] for _ in range(9)]
+    sudoku = [["." for _ in range(9)] for _ in range(9)]
     fill_grid(sudoku)
     remove = 81 - N
     while remove > 0:
         r = random.randint(0, 8)
         c = random.randint(0, 8)
-        if sudoku[r][c] != '.':
-            sudoku[r][c] = '.'
+        if sudoku[r][c] != ".":
+            sudoku[r][c] = "."
             remove -= 1
     return sudoku
 
