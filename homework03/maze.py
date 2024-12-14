@@ -128,9 +128,7 @@ def shortest_path(
                 break
     if len(path) != grid[exit_coord[0]][exit_coord[1]]:
         grid[path[-1][0]][path[-1][1]] = " "
-        path.pop()
-        x, y = path[-1]
-        path.extend(shortest_path(grid, (x, y)))
+        shortest_path(grid, exit_coord)
     return path
 
 
