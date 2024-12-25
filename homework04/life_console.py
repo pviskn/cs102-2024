@@ -9,14 +9,53 @@ class Console(UI):
         super().__init__(life)
 
     def draw_borders(self, screen) -> None:
-        """ Отобразить рамку. """
-        pass
+        """Отрисовать границу экрана."""
+        screen.border(0)
 
     def draw_grid(self, screen) -> None:
-        """ Отобразить состояние клеток. """
-        pass
+        """Отображает текущее состояние клеток."""
+        height, width = screen.getmaxyx()
+        for i, row in enumerate(self.life.curr_generation):
+            for j, cell in enumerate(row):
+                if 0 < i < height - 1 and 0 < j < width - 1:
+                    char = "O" if cell else " "  # 'O' для живой клетки, пробел для мёртвой
+                    screen.addch(i, j, char)
+
+    def display_status(self, screen) -> None:
+        """Отображает статус игры внизу экрана."""
+        height, _ = screen.getmaxyx()
+        screen.addstr(
+            height - 1,
+            0,
+            f"Нажмите [q] для выхода | Поколение: {self.life.generations}",
+            curses.color_pair(1) | curses.A_BOLD,
+        )
 
     def run(self) -> None:
+        """Основной цикл игры."""
         screen = curses.initscr()
-        # PUT YOUR CODE HERE
+        curses.curs_set(0)
+        screen.nodelay(True)
+        screen.timeout(100)
+        curses.start_color()
+        curses.init_pair(1, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+
+        running = True
+        while running:
+            screen.clear()
+            self.draw_borders(screen)
+            self.draw_grid(screen)
+            self.display_status(screen)
+            screen.refresh()
+            self.life.step()
+            key = screen.getch()
+            if key == ord("q"):  # Если нажата клавиша 'q', выходим из игры
+                running = False
+
         curses.endwin()
+
+
+if __name__ == "__main__":
+    life = GameOfLife((24, 80), max_generations=50)
+    ui = Console(life)
+    ui.run()
