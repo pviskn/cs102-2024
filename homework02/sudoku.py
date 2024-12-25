@@ -40,7 +40,7 @@ def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
     >>> group([1,2,3,4,5,6,7,8,9], 3)
     [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     """
-    return [values[i : i + n] for i in range(0, len(values), n)]
+    return [values[i: i + n] for i in range(0, len(values), n)]
 
 
 def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
@@ -93,9 +93,9 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
     >>> find_empty_positions([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']])
     (2, 0)
     """
-    for r in range(len(grid)):
-        for c in range(len(grid[r])):
-            if grid[r][c] == ".":
+    for r, row in enumerate(grid):
+        for c, cell in enumerate(row):
+            if cell == ".":
                 return r, c
     return None
 
@@ -128,7 +128,15 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
             3.2. Продолжить решать оставшуюся часть пазла
     >>> grid = read_sudoku('puzzle1.txt')
     >>> solve(grid)
-    [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
+    [['5', '3', '4', '6', '7', '8', '9', '1', '2'], 
+    ['6', '7', '2', '1', '9', '5', '3', '4', '8'], 
+    ['1', '9', '8', '3', '4', '2', '5', '6', '7'], 
+    ['8', '5', '9', '7', '6', '1', '4', '2', '3'], 
+    ['4', '2', '6', '8', '5', '3', '7', '9', '1'], 
+    ['7', '1', '3', '9', '2', '4', '8', '5', '6'], 
+    ['9', '6', '1', '5', '3', '7', '2', '8', '4'], 
+    ['2', '8', '7', '4', '1', '9', '6', '3', '5'], 
+    ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
     empty = find_empty_positions(grid)
     if not empty:
@@ -189,30 +197,19 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     >>> check_solution(solution)
     True
     """
-
-    def fill_grid(grid: tp.List[tp.List[str]]) -> bool:
-        """Заполняет сетку случайными числами от 1 до 9."""
-        e = find_empty_positions(grid)
-        if not e:
-            return True
-        row, col = e
-        possible_values = find_possible_values(grid, (row, col))
-        for value in possible_values:
-            grid[row][col] = value
-            if fill_grid(grid):
-                return True
-            grid[row][col] = "."
-        return False
-
     sudoku = [["." for _ in range(9)] for _ in range(9)]
-    fill_grid(sudoku)
-    remove = 81 - N
-    while remove > 0:
-        r = random.randint(0, 8)
-        c = random.randint(0, 8)
-        if sudoku[r][c] != ".":
+    N = min(N, 81)
+    for _ in range(N):
+        r, c = random.randint(0, 8), random.randint(0, 8)
+        while sudoku[r][c] != ".":
+            r, c = random.randint(0, 8), random.randint(0, 8)
+        values = find_possible_values(sudoku, (r, c))
+        while values:
+            value = values.pop()
+            sudoku[r][c] = value
+            if solve([r[:] for r in sudoku]):
+                break
             sudoku[r][c] = "."
-            remove -= 1
     return sudoku
 
 
