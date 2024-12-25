@@ -19,13 +19,13 @@ def remove_wall(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> Li
     x, y, c, r = coord[0], coord[1], len(grid) - 1, len(grid[0]) - 1
     directions = ["up", "right"]
     direction = choice(directions)
-    if (direction == "up") and ((0 <= x - 2 < c) and (0 <= y < r)):
+    if direction == "up" and 0 <= x - 2 < c and 0 <= y < r:
         grid[x - 1][y] = " "
     else:
         direction = "right"
-    if (direction == "right") and ((0 <= x < c) and (0 <= y + 2 < r)):
+    if direction == "right" and 0 <= x < c and 0 <= y + 2 < r:
         grid[x][y + 1] = " "
-    elif (direction == "right") and ((0 <= x - 2 < c) and (0 <= y < r)):
+    elif direction == "right" and 0 <= x - 2 < c and 0 <= y < r:
         grid[x - 1][y] = " "
     return grid
 
