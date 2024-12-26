@@ -51,11 +51,13 @@ class Console(UI):
             key = screen.getch()
             if key == ord("q"):  # Если нажата клавиша 'q', выходим из игры
                 running = False
-
+            if not self.life.is_changing or self.life.is_max_generations_exceeded:
+                running = False
+            self.life.step()
         curses.endwin()
 
 
 if __name__ == "__main__":
-    life = GameOfLife((24, 80), max_generations=50)
+    life = GameOfLife((50, 50), max_generations=100)
     ui = Console(life)
     ui.run()
