@@ -10,9 +10,7 @@ Grid = tp.List[Cells]
 
 
 class GameOfLife:
-    def __init__(
-        self, width: int = 640, height: int = 480, cell_size: int = 10, speed: int = 10
-    ) -> None:
+    def __init__(self, width: int = 640, height: int = 480, cell_size: int = 10, speed: int = 10) -> None:
         self.width = width
         self.height = height
         self.cell_size = cell_size
@@ -82,8 +80,7 @@ class GameOfLife:
             Матрица клеток размером `cell_height` х `cell_width`.
         """
         return [
-            [random.randint(0, 1) if randomize else 0 for _ in range(self.cell_width)]
-            for _ in range(self.cell_height)
+            [random.randint(0, 1) if randomize else 0 for _ in range(self.cell_width)] for _ in range(self.cell_height)
         ]
 
     def draw_grid(self) -> None:
@@ -93,9 +90,7 @@ class GameOfLife:
         for y in range(self.cell_height):
             for x in range(self.cell_width):
                 color = pygame.Color("green") if self.grid[y][x] == 1 else pygame.Color("white")
-                rect = pygame.Rect(
-                    x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size
-                )
+                rect = pygame.Rect(x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size)
                 pygame.draw.rect(self.screen, color, rect)
 
     def get_neighbours(self, cell: Cell) -> Cells:
@@ -148,5 +143,5 @@ class GameOfLife:
 
 
 if __name__ == "__main__":
-     game = GameOfLife(480, 640, 10)
-     game.run()
+    game = GameOfLife(480, 640, 10)
+    game.run()
